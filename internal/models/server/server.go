@@ -6,6 +6,7 @@ import (
 
 	"kanban-board-app/internal/auth"
 	"kanban-board-app/internal/board"
+	"kanban-board-app/internal/card"
 	"kanban-board-app/pkg/database"
 
 	"net/http"
