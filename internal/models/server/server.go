@@ -2,7 +2,12 @@ package server
 
 import (
 	"github.com/gorilla/mux"
+	"kanban-board-app/internal/list"
+
+	"kanban-board-app/internal/auth"
+	"kanban-board-app/internal/board"
 	"kanban-board-app/pkg/database"
+
 	"net/http"
 )
 
@@ -16,14 +21,14 @@ func NewRouter() *mux.Router {
 	// Board routes
 	router.HandleFunc("/boards", board.CreateBoard(database.DB)).Methods("POST")
 	router.HandleFunc("/boards", board.GetBoards(database.DB)).Methods("GET")
-	router.HandleFunc("/boards/{id}", boards.UpdateBoard(database.DB)).Methods("PUT")
+	router.HandleFunc("/boards/{id}", board.UpdateBoard(database.DB)).Methods("PUT")
 	router.HandleFunc("/boards/{id}", board.DeleteBoard(database.DB)).Methods("DELETE")
 
 	// list routes
-	router.HandleFunc("/tasks", task.CreateTask(database.DB)).Methods("POST")
-	router.HandleFunc("/tasks", task.GetTasks(database.DB)).Methods("GET")
-	router.HandleFunc("/tasks/{id}", task.UpdateTask(database.DB)).Methods("PUT")
-	router.HandleFunc("/tasks/{id}", task.DeleteTask(database.DB)).Methods("DELETE")
+	router.HandleFunc("/lists", list.CreateList(database.DB)).Methods("POST")
+	router.HandleFunc("/lists", list.GetLists(database.DB)).Methods("GET")
+	router.HandleFunc("/lists/{id}", list.UpdateList(database.DB)).Methods("PUT")
+	router.HandleFunc("/lists/{id}", list.DeleteList(database.DB)).Methods("DELETE")
 
 	// card routes
 	router.HandleFunc("/cards", card.CreateCard(database.DB)).Methods("POST")
