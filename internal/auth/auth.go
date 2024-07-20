@@ -41,7 +41,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-func login(w http.ResponseWriter, r *http.Request) {
+func Login(w http.ResponseWriter, r *http.Request) {
 	var credentials Credentials
 	if err := json.NewDecoder(r.Body).Decode(&credentials); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -49,6 +49,10 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 	var user models.User
 	if err := database.DB.Where("username = ?", credentials.Username).First(&user).Error; err != nil {
+		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+		return
+	}
+	if !CheckPasswordHash(credentials.Password, user.Password) {
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		return
 	}
